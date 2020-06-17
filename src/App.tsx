@@ -1,10 +1,18 @@
+// App home - Core app component
+// Core imports
 import React from 'react';
+import Router from 'routes/Router';
+import { Link } from 'react-router-dom';
+
+// Styles
 import './App.scss';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-      I am running!
+      <Link to="/">Main</Link>
+      <Link to="/admin">Admin</Link>
+      <Router/>
     </div>
   );
 }
