@@ -1,0 +1,11 @@
+@import 'styles/base.scss';
+.App {
+  a,
+  a:visited,
+  a:active,
+  a:focus {
+    padding: 1rem;
+    color: $white;
+    text-decoration: none;
+  }
+}
