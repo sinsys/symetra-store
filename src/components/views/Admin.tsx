@@ -17,10 +17,14 @@ import './Admin.scss';
 const Admin = () => {
 
   const { state, dispatch } = useContext(AppContext);
+
+  // Mimicking how the data could be acquired
   const purchases: Purchase[] = ApiService.getAllPurchases(state.purchases);
+
   const [couponInterval, setCouponInterval] = useState(state.couponInterval);
   const [couponCode, setCouponCode] = useState(state.couponCode);
 
+  // Handling controlled form inputs
   const onChangeCouponInterval = (val: number) => {
     setCouponInterval(val);
   }
@@ -29,6 +33,7 @@ const Admin = () => {
     setCouponCode(val);
   }
 
+  // Updating the coupon interval
   const submitCouponInterval = (e: any) => {
     e.preventDefault();
     dispatch({
@@ -37,6 +42,7 @@ const Admin = () => {
     })
   }
 
+  // Updating the coupon code
   const submitCouponCode = (e: any) => {
     e.preventDefault();
     dispatch({
@@ -45,30 +51,31 @@ const Admin = () => {
     })
   }
 
+  // Generates one of two reports that download to the client in json format.
   const generateReport = (type: string) => {
     switch(type) {
       case 'all':
         return "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(purchases));
       case 'coupon':
-        const couponPurchases = ApiService.getCouponPurchases(state.purchases);
-        return "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(couponPurchases));
+        return "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(ApiService.getCouponPurchases(state.purchases)));
       default:
         return "/admin";
     }
   };
 
+  // This is way too much content for one component, but in the interest of time I wrote it inline for now
   return (
     <div className="Admin">
       <section>
         <h2>Edit Coupon Settings</h2>
-        <form id="interval_form" onSubmit={e => submitCouponInterval(e)}>
+        <form id="interval_form" onSubmit={submitCouponInterval}>
           <div>
             <label htmlFor="coupon_interval">Coupon Interval:</label>
             <input type="number" id="coupon_interval" defaultValue={couponInterval} onChange={e => onChangeCouponInterval(parseInt(e.currentTarget.value))} />
             <button>Set coupon interval</button>
           </div>
         </form>
-        <form id="code_form" onSubmit={e => submitCouponCode(e)}>
+        <form id="code_form" onSubmit={submitCouponCode}>
           <div>
             <label htmlFor="coupon_code">Coupon Code:</label>
             <input type="text" id="coupon_code" defaultValue={couponCode} onChange={e => onChangeCouponCode(e.currentTarget.value)} />

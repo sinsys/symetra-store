@@ -71,7 +71,7 @@ export function makePurchase(productId: string, userId: string, coupon?: Coupon)
 // Admin Reports
 /* Because the data is stored in context, we are just passing it
 in as a prob as its already readily available in the component
-state. This would actually hit an endpoint in a real-world
+state. These would actually hit an endpoint in a real-world
 scenario */
 export function getAllPurchases(data: Purchase[]): Purchase[] {
   console.log(`GET /purchases`);
@@ -88,10 +88,17 @@ export function getCouponPurchases(data: Purchase[]): Purchase[] {
 
 export function updateCouponInterval(data: number): { success: boolean, interval: number } {
   const interval = { interval: data };
-  console.log(`PATCH /admin/coupon`);
+  console.log(`PATCH /admin/coupon-interval`);
   console.log(interval);
   return { success: true, interval: data };
-}
+};
+
+export function updateCouponCode(data: string): { success: boolean, code: string } {
+  const code = { code: data };
+  console.log(`PATCH /admin/coupon-code`);
+  console.log(code);
+  return { success: true, code: data };
+};
 
 /* This sort of functionality would exist on the server
 I imagine the server will respond with a property
@@ -119,6 +126,9 @@ export default {
   getAllPurchases: getAllPurchases,
   getCouponPurchases: getCouponPurchases,
 
+  updateCouponInterval: updateCouponInterval,
+  updateCouponCode: updateCouponCode,
+  
   makePurchase: makePurchase,
   checkGrantCoupon: checkGrantCoupon,
   validateCoupon: validateCoupon
