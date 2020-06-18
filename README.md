@@ -1,10 +1,12 @@
 ## Table of Contents
 - [Description](#description)
 - [Goals:](#goals)
-  - [Develop API resources to enable:](#develop-api-resources-to-enable)
-  - [Stretch Goal:](#stretch-goal)
-- [Assumptions:](#assumptions)
-- [Deliverables:](#deliverables)
+  - [Develop API resources](#develop-api-resources-to-enable)
+  - [Stretch Goal](#stretch-goal)
+- [Assumptions](#assumptions)
+- [Deliverables](#deliverables)
+- [Scripts:](#scripts)
+- [Notable Points](#notable-points)
 
 # Symetra Store
 
@@ -41,7 +43,7 @@ Imagine an ecommerce store where the store owner gives out discounts to every nt
 - Because we need no persistent data layer, data is stored in React Context
   - `localStorage` or `sessionStorage` were considered, but Context made sense for demo purposes
 - You can toggle between the active user with the button in the top right. It is purely a random selection from all users to demonstrate that the coupon is only valid for the user that purchased the `nth` item
-- API Routes were written pretty barebones. Stubs were put in place for interacting with a real API and the functions were used, but for the purposes of a demo I kept it all self-contained in Context and spoofed expected responses. Comments are available on the `./src/services/ApiService.tsx` file.
+- API Routes were written pretty open ended. Stubs were put in place for interacting with a real API and the functions were used, but for the purposes of a demo I kept it all self-contained in Context and spoofed expected responses. Comments are available on the `./src/services/ApiService.tsx` file.
   - For the purposes of demoing what the `POST` or `PATCH` body properties look like, I have `console.log(foo)` an example endpoint and the expected response.
 - Reports are downloaded via the buttons on the Admin page. A `json` file will be downloaded to your device for the selection you chose. All purchases are displayed in a table for demo purposes.
 - The data has no persistence. A manual page refresh or closing your window will remove any purchases/settings you've changed. All data will persist while the app is open.
