@@ -7,6 +7,7 @@
   background: $white;
   color: $black;
   flex-grow: 1;
+  align-items: stretch;
   h2 {
     font-size: 2rem;
     border-bottom: 2px solid $lightGrey;
