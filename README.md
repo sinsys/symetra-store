@@ -1,6 +1,7 @@
 ## Table of Contents
 - [Description](#description)
-- [Goals:](#goals)
+- [Live Link](#live-link)
+- [Goals](#goals)
   - [Develop API resources](#develop-api-resources-to-enable)
   - [Stretch Goal](#stretch-goal)
 - [Assumptions](#assumptions)
@@ -12,6 +13,9 @@
 
 ## Description
 Imagine an ecommerce store where the store owner gives out discounts to every nth transaction. Customers, as they login, get to see if they have discount and the appropriate discount code. Customers can then purchase items using the discount code if available. The store owner reviews at various times what the count of purchases that were made in the store as well as the total count of discounts that were given out.
+
+## Live Link
+https://symetra-strore.vercel.app  
 
 ## Goals: 
 ### Develop API resources
