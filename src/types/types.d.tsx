@@ -21,3 +21,7 @@ export type Purchase = {
   couponApplied: boolean;
   couponCode: string | null;
 }
+
+export type Coupon = {
+  code: string | null;
+}

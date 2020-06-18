@@ -25,4 +25,9 @@
     color: $midGrey;
     padding: 0.5rem;
   }
+
+  button.active {
+    background: $success;
+    color: $black;
+  }
 }

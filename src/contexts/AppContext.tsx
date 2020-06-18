@@ -4,7 +4,11 @@ import React, {
   useReducer
 } from 'react';
 
+// Types
 import { Product, User, Purchase } from 'types/types.d';
+
+// Services
+import ApiService from 'services/ApiService';
 
 // Setup explicit interfaces for our Context
 interface AppContextProps {
@@ -45,7 +49,10 @@ const AppContext = createContext({} as AppContextProps);
 
 const reducer = (state: AppContextState, action: any) => {
   let payload = action.payload;
+  // Using for getting index of user to update users array
+  
   switch (action.type) {
+
     // Setting core data
     case 'set-products':
       return {
@@ -67,6 +74,7 @@ const reducer = (state: AppContextState, action: any) => {
         ...state,
         fetched: payload
       };
+
     // Change to a random user
     case 'set-random-user':
       return {
@@ -80,14 +88,27 @@ const reducer = (state: AppContextState, action: any) => {
         ...state,
         purchases: [...state.purchases, payload as Purchase]
       }
-    case 'set-coupon':
-      const userIndex = state.users.findIndex(user => user.id === payload.id);
-      const newUsers = state.users;
-      newUsers[userIndex].hasCoupon = true;
-      console.log(newUsers[userIndex]);
+
+    case 'consume-coupon':
+      const couponUserIndex = state.users.findIndex(user => user.id === payload.id);
+      state.users[couponUserIndex].hasCoupon = false;
+      state.users[couponUserIndex].couponCode = null;
       return {
         ...state,
-        users: newUsers
+        currentUser: state.users[couponUserIndex],
+        users: state.users
+      }
+    
+    case 'set-coupon':
+      const userIndex = state.users.findIndex(user => user.id === payload.id);
+      if (ApiService.checkGrantCoupon(state.purchases.length, state.couponInterval) ) {
+        state.users[userIndex].hasCoupon = true;
+        state.users[userIndex].couponCode = state.couponCode;
+      }
+      return {
+        ...state,
+        users: state.users,
+        currentUser: state.users[userIndex]
       }
 
     default: return initialState;

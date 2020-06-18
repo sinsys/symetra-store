@@ -10,7 +10,7 @@ const ProductsData = {
   generateProducts: (count: number): Product[] => {
     const mockProducts = [] as Product[];
     for ( let i=0; i<count; i++) {
-      const mockProduct:Product = {
+      const mockProduct: Product = {
         id: faker.random.uuid(),
         name: faker.random.words(2),
         // Forcing a float value on a random number. Forcing 2 decimal places for currency

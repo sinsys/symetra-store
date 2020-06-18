@@ -1,9 +1,9 @@
 // Product Listing component
 // Core imports
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 // Types
-import { Product, Purchase } from 'types/types.d';
+import { Product, Coupon, Purchase } from 'types/types.d';
 
 // Services / APIs
 import ApiService from 'services/ApiService';
@@ -21,22 +21,35 @@ type ProductListingProps = {
 const ProductListing = (props: ProductListingProps) => {
 
   const { state, dispatch } = useContext(AppContext);
+  const [useCoupon, setUseCoupon] = useState(false);
+
   const product: Product = props.product;
 
-  const handleBuyProduct = () => {
+  const handleBuyProduct = (useCoupon?: boolean) => {
     const makePurchase = new Promise((res, rej) => {
       if (Object.keys(state.currentUser).length === 0) {
         rej(false);
       }
-      const purchase = ApiService.makePurchase(product.id, state.currentUser.id);
-      res(purchase);
+      if (useCoupon) {
+        const ourCoupon: Coupon = {code: state.currentUser.couponCode}
+        const purchase = ApiService.makePurchase(product.id, state.currentUser.id, ourCoupon);
+        setUseCoupon(false);
+        dispatch({
+          type: 'consume-coupon',
+          payload: state.currentUser
+        })
+        res(purchase);
+      } else {
+        const purchase = ApiService.makePurchase(product.id, state.currentUser.id);
+        res(purchase);
+      }
     });
 
     makePurchase
       .then(response => {
         dispatch({
           type: 'make-purchase',
-          payload: response
+          payload: response as Purchase
         })
         dispatch({
           type: 'set-coupon',
@@ -48,18 +61,27 @@ const ProductListing = (props: ProductListingProps) => {
       })
   }
 
+  const handleApplyCoupon = () => {
+    setUseCoupon(!useCoupon);
+  }
+
   const renderCouponButton = () => {
-    return state.currentUser.hasCoupon
-      ? <button>Use coupon</button>
+    return ApiService.validateCoupon(state.currentUser.couponCode, state.couponCode)
+      ? <button 
+          className={useCoupon ? 'active': ''}
+          onClick={e => handleApplyCoupon()}
+        >
+          {!useCoupon ? `Use coupon ${state.couponCode}` : `Remove coupon ${state.couponCode}`}
+        </button>
       : <></>;
   };
 
   return (
     <div className="ProductListing">
       <h2 className="title">{product.name}</h2>
-      <p className="price">${product.price}</p>
+      <p className="price">${product.price.toFixed(2)}</p>
       <p className="details">{product.details}</p>
-      <button onClick={(e) => handleBuyProduct()}>Buy Me</button>
+      <button onClick={(e) => handleBuyProduct(useCoupon)}>Buy Me</button>
       {renderCouponButton()}
     </div>
   );
