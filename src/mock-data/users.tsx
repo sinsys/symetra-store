@@ -1,13 +1,13 @@
 // Creates fake data for use on this demo eCommerce site
 // It is intended to demonstrate scalability
 import faker from 'faker';
-import { User } from './types.d';
+import { User } from 'types/types.d';
 
 // Generates data about users
 const UsersData = {
 
   // Generates a set number of random products
-  generateUsers: (count: number): Array<User> => {
+  generateUsers: (count: number): User[] => {
     const mockUsers = [];
     for ( let i=0; i<count; i++) {
       const mockUser: User = {

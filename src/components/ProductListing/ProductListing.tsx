@@ -3,7 +3,7 @@
 import React from 'react';
 
 // Types
-import { Product } from 'mock-data/types.d';
+import { Product } from 'types/types.d';
 
 // Styles
 import './ProductListing.scss';
