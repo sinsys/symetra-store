@@ -14,7 +14,7 @@ import './Main.scss';
 const Main = () => {
 
   // Establish state
-  const { state } = useContext(AppContext);
+  const { state } = useContext(AppContext) || {};
 
   const renderProducts = () => {
     // Ensure render doesn't fail if state isn't initialized

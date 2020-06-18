@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ProductListing from './ProductListing';
+import { AppContextProvider } from 'contexts/AppContext';
 
 it(`ProductListing renders without crashing`, () => {
   const div = document.createElement('div');
@@ -12,7 +13,9 @@ it(`ProductListing renders without crashing`, () => {
     details: "Harum sed omnis dolore perferendis suscipit cum. Et animi vitae expedita et non velit tenetur qui. Non neque id sint qui rerum. Facere fugiat ex at. Perspiciatis temporibus ut explicabo iste dolorem adipisci."
   };
   ReactDOM.render(
-    <ProductListing product={sampleProduct} />,
+    <AppContextProvider>
+      <ProductListing product={sampleProduct} />
+    </AppContextProvider>,
     div
   )
 });

@@ -3,7 +3,7 @@
 import React, { useContext } from 'react';
 
 // Types
-import { Product } from 'types/types.d';
+import { Product, Purchase } from 'types/types.d';
 
 // Services / APIs
 import ApiService from 'services/ApiService';
@@ -28,7 +28,7 @@ const ProductListing = (props: ProductListingProps) => {
       if (Object.keys(state.currentUser).length === 0) {
         rej(false);
       }
-      const purchase = ApiService.makePurchase(product.id, state.currentUser.id, false);
+      const purchase = ApiService.makePurchase(product.id, state.currentUser.id);
       res(purchase);
     });
 
@@ -38,11 +38,21 @@ const ProductListing = (props: ProductListingProps) => {
           type: 'make-purchase',
           payload: response
         })
+        dispatch({
+          type: 'set-coupon',
+          payload: state.currentUser
+        })
       })
       .catch(e => {
         console.log(e);
       })
   }
+
+  const renderCouponButton = () => {
+    return state.currentUser.hasCoupon
+      ? <button>Use coupon</button>
+      : <></>;
+  };
 
   return (
     <div className="ProductListing">
@@ -50,7 +60,7 @@ const ProductListing = (props: ProductListingProps) => {
       <p className="price">${product.price}</p>
       <p className="details">{product.details}</p>
       <button onClick={(e) => handleBuyProduct()}>Buy Me</button>
-      <button>Apply Coupon</button>
+      {renderCouponButton()}
     </div>
   );
 }

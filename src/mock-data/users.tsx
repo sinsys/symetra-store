@@ -14,6 +14,7 @@ const UsersData = {
         id: faker.random.uuid(),
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
         hasCoupon: false,
+        couponCode: null,
         purchases: []
       };
       mockUsers.push(mockUser);

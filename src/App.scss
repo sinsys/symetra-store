@@ -1,10 +1,12 @@
 @import 'styles/base.scss';
 .App {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+
+  header {
+    width: 100%;
+    nav {
+      display: flex;
+    }
+  }
   a,
   a:visited,
   a:active,

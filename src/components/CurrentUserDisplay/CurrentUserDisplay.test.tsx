@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Admin from './Admin';
+import CurrentUserDisplay from './CurrentUserDisplay';
 import { AppContextProvider } from 'contexts/AppContext';
 
-it(`Admin renders without crashing`, () => {
+it(`ProductListing renders without crashing`, () => {
   const div = document.createElement('div');
   ReactDOM.render(
     <AppContextProvider>
-      <Admin />
+      <CurrentUserDisplay />
     </AppContextProvider>,
     div
   )
