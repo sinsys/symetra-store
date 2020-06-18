@@ -13,15 +13,30 @@ interface AppContextProps {
 }
 
 interface AppContextState {
+  currentUser: User,
   products: Product[];
   users: User[];
   purchases: Purchase[];
+  couponCode: string;
+  couponInterval: number;
+  fetched: boolean;
+}
+
+const initialUser: User = {
+  id: "defaultUUID",
+  name: "",
+  hasCoupon: false,
+  purchases: [] as Purchase[]
 }
 
 const initialState: AppContextState = {
+  currentUser: initialUser,
   products: [] as Product[],
-  users: [] as User[],
-  purchases: [] as Purchase[]
+  users: [initialUser] as User[],
+  purchases: [] as Purchase[],
+  couponCode: "ABC123",
+  couponInterval: 3,
+  fetched: false
 };
 
 // Initialize Context
@@ -40,10 +55,20 @@ const reducer = (state: AppContextState, action: any) => {
         ...state,
         users: payload as User[]
       };
-    case 'add-purchase':
+    case 'set-current-user':
       return {
         ...state,
-        purchases: [...state.purchases, payload]
+        currentUser: payload as User
+      };
+    case 'set-fetched':
+      return {
+        ...state,
+        fetched: payload
+      }
+    case 'make-purchase':
+      return {
+        ...state,
+        purchases: [...state.purchases, payload as Purchase]
       }
     default: return initialState;
   };
