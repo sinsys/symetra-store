@@ -5,7 +5,7 @@
   - [Stretch Goal](#stretch-goal)
 - [Assumptions](#assumptions)
 - [Deliverables](#deliverables)
-- [Scripts:](#scripts)
+- [Scripts](#scripts)
 - [Notable Points](#notable-points)
 
 # Symetra Store
