@@ -14,13 +14,12 @@ import './App.scss';
 const App = () => {
   const products = ProductsData.generateProducts(10);
   const users = UsersData.generateUsers(10);
-  console.log(products);
-  console.log(users);
+
   return (
     <div className="App">
       <Link to="/">Main</Link>
       <Link to="/admin">Admin</Link>
-      <Router/>
+      <Router />
     </div>
   );
 }

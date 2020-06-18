@@ -4,6 +4,10 @@ import React from 'react';
 
 // Services / Mock Data
 import ProductsData from 'mock-data/products';
+
+// Components
+import ProductListing from 'components/ProductListing/ProductListing';
+
 // Styles
 import './Main.scss';
 
@@ -14,14 +18,7 @@ const Main = () => {
   return (
     <div className="Main">
       {products.map(product => {
-        return (
-          <div key={product.id} className="Product">
-            <p>{product.name}</p>
-            <p>${product.price}</p>
-            <p>{product.details}</p>
-            <button>Buy Me</button>
-          </div>
-        )
+        return <ProductListing key={product.id} product={product} />
       })}
     </div>
   );
