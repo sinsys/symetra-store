@@ -23,10 +23,11 @@ interface AppContextState {
 }
 
 const initialUser: User = {
-  id: "defaultUUID",
+  id: "",
   name: "",
   hasCoupon: false,
-  purchases: [] as Purchase[]
+  purchases: [] as Purchase[],
+  couponCode: null
 }
 
 const initialState: AppContextState = {
@@ -45,6 +46,7 @@ const AppContext = createContext({} as AppContextProps);
 const reducer = (state: AppContextState, action: any) => {
   let payload = action.payload;
   switch (action.type) {
+    // Setting core data
     case 'set-products':
       return {
         ...state,
@@ -64,12 +66,30 @@ const reducer = (state: AppContextState, action: any) => {
       return {
         ...state,
         fetched: payload
+      };
+    // Change to a random user
+    case 'set-random-user':
+      return {
+        ...state,
+        currentUser: state.users[Math.floor(Math.random() * state.users.length)]
       }
+
+    // Purchases related
     case 'make-purchase':
       return {
         ...state,
         purchases: [...state.purchases, payload as Purchase]
       }
+    case 'set-coupon':
+      const userIndex = state.users.findIndex(user => user.id === payload.id);
+      const newUsers = state.users;
+      newUsers[userIndex].hasCoupon = true;
+      console.log(newUsers[userIndex]);
+      return {
+        ...state,
+        users: newUsers
+      }
+
     default: return initialState;
   };
 };

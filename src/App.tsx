@@ -7,6 +7,9 @@ import { Link } from 'react-router-dom';
 // Services / APIs
 import ApiService from 'services/ApiService';
 
+// Components
+import CurrentUserDisplay from 'components/CurrentUserDisplay/CurrentUserDisplay';
+
 // Styles
 import './App.scss';
 
@@ -39,15 +42,6 @@ const App = () => {
         payload: users[0]
       })
       dispatch({
-        type: 'make-purchase',
-        payload: {
-          id: "1234",
-          productId: products[0].id,
-          datePurchased: new Date(),
-          userId: users[0].id
-        }
-      })
-      dispatch({
         type: 'set-fetched',
         payload: true
       })
@@ -57,8 +51,13 @@ const App = () => {
 
   return (
     <div className="App">
-      <Link to="/">Main</Link>
-      <Link to="/admin">Admin</Link>
+      <header>
+        <nav>
+          <Link to="/">Main</Link>
+          <Link to="/admin">Admin</Link>
+          <CurrentUserDisplay />
+        </nav>
+      </header>
       <Router />
     </div>
   );

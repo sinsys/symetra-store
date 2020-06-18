@@ -2,6 +2,7 @@ export type User = {
   id: string;
   name: string;
   hasCoupon: boolean;
+  couponCode: string | null;
   purchases: Array<Purchase>
 }
 
@@ -17,4 +18,6 @@ export type Purchase = {
   productId: string;
   userId: string;
   datePurchased: Date;
+  couponApplied: boolean;
+  couponCode: string | null;
 }
