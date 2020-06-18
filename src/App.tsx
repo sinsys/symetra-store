@@ -5,8 +5,7 @@ import Router from 'routes/Router';
 import { Link } from 'react-router-dom';
 
 // Services / APIs
-import ProductsData from 'mock-data/products';
-import UsersData from 'mock-data/users';
+import ApiService from 'services/ApiService';
 
 // Styles
 import './App.scss';
@@ -21,27 +20,37 @@ const App = () => {
   const {dispatch} = useContext(AppContext);
 
   useEffect(() => {
-    // Invoke random generation of Users and Products
-    const products = ProductsData.generateProducts(10);
-    const users = UsersData.generateUsers(10);
 
-    // Set our data in context to reflect a spoofed API call
-    dispatch({
-      type: 'set-products',
-      payload: products
-    });
-    dispatch({
-      type: 'set-users',
-      payload: users
-    });
-    dispatch({
-      type: 'add-purchase',
-      payload: {
-        id: "1234",
-        product: "Hello world",
-        datePurchased: new Date()
-      }
-    });
+      // Invoke random generation of Users and Products
+      const products = ApiService.getProducts(10);
+      const users = ApiService.getUsers(10);
+
+      // Set our data in context to reflect a spoofed API call
+      dispatch({
+        type: 'set-products',
+        payload: products
+      });
+      dispatch({
+        type: 'set-users',
+        payload: users
+      });
+      dispatch({
+        type: 'set-current-user',
+        payload: users[0]
+      })
+      dispatch({
+        type: 'make-purchase',
+        payload: {
+          id: "1234",
+          productId: products[0].id,
+          datePurchased: new Date(),
+          userId: users[0].id
+        }
+      })
+      dispatch({
+        type: 'set-fetched',
+        payload: true
+      })
     // Empty array for dependencies as we do not want this effect to retrigger
     // eslint-disable-next-line
   },[]);

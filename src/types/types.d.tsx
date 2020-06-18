@@ -14,6 +14,7 @@ export type Product = {
 
 export type Purchase = {
   id: string;
-  product: string;
+  productId: string;
+  userId: string;
   datePurchased: Date;
 }

@@ -1,9 +1,9 @@
 // Main view component
 // Core imports
-import React from 'react';
+import React, { useContext } from 'react';
 
-// Services / Mock Data
-import ProductsData from 'mock-data/products';
+// Contexts
+import { AppContext } from 'contexts/AppContext';
 
 // Components
 import ProductListing from 'components/ProductListing/ProductListing';
@@ -13,13 +13,23 @@ import './Main.scss';
 
 const Main = () => {
 
-  const products = ProductsData.generateProducts(10);
+  // Establish state
+  const { state } = useContext(AppContext);
+
+  const renderProducts = () => {
+    // Ensure render doesn't fail if state isn't initialized
+    if (state) {
+      return state.products.map(product => {
+        return <ProductListing key={product.id} product={product} />
+      })
+    } else {
+      return [];
+    }
+  };
 
   return (
     <div className="Main">
-      {products.map(product => {
-        return <ProductListing key={product.id} product={product} />
-      })}
+      {renderProducts()}
     </div>
   );
 }
