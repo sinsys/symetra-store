@@ -3,7 +3,6 @@
 import React from 'react';
 import Router from 'routes/Router';
 import { Link } from 'react-router-dom';
-import faker from 'faker';
 
 // Services / APIs
 import ProductsData from 'mock-data/products';
@@ -20,7 +19,7 @@ const App = () => {
     <div className="App">
       <Link to="/">Main</Link>
       <Link to="/admin">Admin</Link>
-      <Router/>
+      <Router />
     </div>
   );
 }

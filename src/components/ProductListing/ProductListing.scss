@@ -1,0 +1,27 @@
+@import 'styles/base.scss';
+
+.ProductListing {
+  width: 320px;
+  padding: 1rem;
+  margin: 1rem;
+  background: $white;
+  color: $black;
+  flex-grow: 1;
+  h2 {
+    font-size: 2rem;
+    border-bottom: 2px solid $lightGrey;
+    color: $darkGrey;
+    text-transform: capitalize;
+  }
+
+  p.price {
+    font-size: 1.5rem;
+    color: $primary;
+    padding: 0.5rem;
+  }
+
+  p.details {
+    color: $midGrey;
+    padding: 0.5rem;
+  }
+}
