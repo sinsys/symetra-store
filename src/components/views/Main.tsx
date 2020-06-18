@@ -14,17 +14,13 @@ import './Main.scss';
 const Main = () => {
 
   // Establish state
-  const { state } = useContext(AppContext) || {};
+  const { state } = useContext(AppContext);
 
+  // Display our products
   const renderProducts = () => {
-    // Ensure render doesn't fail if state isn't initialized
-    if (state) {
-      return state.products.map(product => {
-        return <ProductListing key={product.id} product={product} />
-      })
-    } else {
-      return [];
-    }
+    return state.products.map(product => {
+      return <ProductListing key={product.id} product={product} />
+    });
   };
 
   return (

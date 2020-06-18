@@ -1,0 +1,58 @@
+@import 'styles/base.scss';
+
+.Admin {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-wrap: wrap;
+  h2 {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+  }
+  section {
+    display: block;
+    padding: 1rem;
+    margin: 1rem 0;
+    background: rgba(0,0,0,0.2);
+  }
+
+  form {
+    div {
+      padding: 0.5rem;
+    }
+    input[type=text],
+    input[type=number] {
+      margin: 0 0.25rem;
+    }
+  }
+}
+
+.PurchasesTable {
+  thead {
+    background: $white;
+    color: $primary;
+    font-weight: bold;
+    flex-basis: 1;
+    td {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    th {
+      padding: 0.125rem;
+    }
+  }
+
+  td {
+    padding: 0.25rem 1rem;
+  }
+}
+
+.Reports {
+  a {
+    margin: 1rem;
+    &:hover {
+      color: $success;
+    }
+  }
+}

@@ -40,11 +40,7 @@ const App = () => {
       dispatch({
         type: 'set-current-user',
         payload: users[0]
-      })
-      dispatch({
-        type: 'set-fetched',
-        payload: true
-      })
+      });
     // Empty array for dependencies as we do not want this effect to retrigger
     // eslint-disable-next-line
   },[]);

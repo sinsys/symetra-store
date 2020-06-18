@@ -63,9 +63,34 @@ export function makePurchase(productId: string, userId: string, coupon?: Coupon)
     couponCode: couponCode
   };
 
-  console.log(`POST /purchase`);
+  console.log(`POST /purchases`);
   console.log(purchase);
   return purchase;
+}
+
+// Admin Reports
+/* Because the data is stored in context, we are just passing it
+in as a prob as its already readily available in the component
+state. This would actually hit an endpoint in a real-world
+scenario */
+export function getAllPurchases(data: Purchase[]): Purchase[] {
+  console.log(`GET /purchases`);
+  console.log(data);
+  return data;
+}
+
+export function getCouponPurchases(data: Purchase[]): Purchase[] {
+  const couponPurchases = data.filter(purchase => purchase.couponApplied);
+  console.log(`GET /purchases?coupon=true`);
+  console.log(couponPurchases);
+  return couponPurchases;
+}
+
+export function updateCouponInterval(data: number): { success: boolean, interval: number } {
+  const interval = { interval: data };
+  console.log(`PATCH /admin/coupon`);
+  console.log(interval);
+  return { success: true, interval: data };
 }
 
 /* This sort of functionality would exist on the server
@@ -75,6 +100,10 @@ was granted the coupon */
 
 // Spoofing a server check for if the customer should receive a coupon
 export function checkGrantCoupon(purchases: number, interval: number): boolean {
+  // This should be refactored once a real API is in place.
+  // It is unclear if we want the counter to restart to 0
+  // when the interval is changed, or maintain the comparison
+  // to total orders
   return purchases % interval === 0 && purchases >= interval;
 }
 
@@ -86,6 +115,10 @@ export function validateCoupon(coupon: string | null, current: string): boolean 
 export default {
   getProducts: getProducts,
   getUsers: getUsers,
+
+  getAllPurchases: getAllPurchases,
+  getCouponPurchases: getCouponPurchases,
+
   makePurchase: makePurchase,
   checkGrantCoupon: checkGrantCoupon,
   validateCoupon: validateCoupon

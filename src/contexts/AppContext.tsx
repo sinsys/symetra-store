@@ -23,9 +23,9 @@ interface AppContextState {
   purchases: Purchase[];
   couponCode: string;
   couponInterval: number;
-  fetched: boolean;
 }
 
+// Setup initial User - Generally we would have an authentication provide this via JWT or other authentication method
 const initialUser: User = {
   id: "",
   name: "",
@@ -34,14 +34,14 @@ const initialUser: User = {
   couponCode: null
 }
 
+// Setup initial State
 const initialState: AppContextState = {
   currentUser: initialUser,
   products: [] as Product[],
   users: [initialUser] as User[],
   purchases: [] as Purchase[],
-  couponCode: "ABC123",
-  couponInterval: 3,
-  fetched: false
+  couponCode: "ABC123", // This is just hardcoded in for now
+  couponInterval: 3 // This is just hardcoded in for now
 };
 
 // Initialize Context
@@ -49,8 +49,6 @@ const AppContext = createContext({} as AppContextProps);
 
 const reducer = (state: AppContextState, action: any) => {
   let payload = action.payload;
-  // Using for getting index of user to update users array
-  
   switch (action.type) {
 
     // Setting core data
@@ -68,11 +66,6 @@ const reducer = (state: AppContextState, action: any) => {
       return {
         ...state,
         currentUser: payload as User
-      };
-    case 'set-fetched':
-      return {
-        ...state,
-        fetched: payload
       };
 
     // Change to a random user
@@ -110,6 +103,19 @@ const reducer = (state: AppContextState, action: any) => {
         users: state.users,
         currentUser: state.users[userIndex]
       }
+
+    // Admin behavior
+    case 'set-coupon-interval':
+      return {
+        ...state,
+        couponInterval: payload
+      };
+
+    case 'set-coupon-code':
+      return {
+        ...state,
+        couponCode: payload
+      };
 
     default: return initialState;
   };
