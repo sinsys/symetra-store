@@ -40,7 +40,7 @@ export function getUsers(count: number): User[] {
 }
 
 // Make a purchase
-export function makePurchase(productId: string, userId: string, coupon?: Coupon): Purchase | void {
+export function makePurchase(productId: string, userId: string, coupon?: Coupon): Purchase {
   let purchaseId = faker.random.uuid();
 
   // Validate if user applied coupon
