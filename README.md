@@ -32,7 +32,7 @@ https://github.com/sinsys/symetra-store-server
   - Run `npm start` on the client code repository
   - The app will be running on `http://localhost:3000`
   - Tests are not available for the server code at this time due to time constraints. They will be added shortly
-  - The client code can be tested by running `npm i`  
+  - The client code can be tested by running `npm t`  
 
 ## Goals  
 ### Develop API resources  
