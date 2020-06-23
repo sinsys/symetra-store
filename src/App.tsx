@@ -26,22 +26,27 @@ const App = () => {
 
       // Invoke random generation of Users and Products. You can set these to any values, but I have no pagination in place
       // 10 seemed like a good sample size to initialize with for proof of concept
-      const products = ApiService.getProducts(10);
-      const users = ApiService.getUsers(10);
+      Promise.all([
+        ApiService.getProducts(),
+        ApiService.getUsers()
+      ])
+      .then(responses => Promise.all(responses.map(res => res.json())))
+      .then(([products, users, couponDetails]) => {
+        // Set our data in context
+        dispatch({
+          type: 'set-products',
+          payload: products
+        });
+        dispatch({
+          type: 'set-users',
+          payload: users
+        });
+        dispatch({
+          type: 'set-current-user',
+          payload: users[0]
+        });
+      });
 
-      // Set our data in context to reflect a spoofed API call
-      dispatch({
-        type: 'set-products',
-        payload: products
-      });
-      dispatch({
-        type: 'set-users',
-        payload: users
-      });
-      dispatch({
-        type: 'set-current-user',
-        payload: users[0]
-      });
     // Empty array for dependencies as we do not want this effect to retrigger
     // eslint-disable-next-line
   },[]);

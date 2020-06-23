@@ -38,7 +38,7 @@ const initialUser: User = {
 const initialState: AppContextState = {
   currentUser: initialUser,
   products: [] as Product[],
-  users: [initialUser] as User[],
+  users: [initialUser],
   purchases: [] as Purchase[],
   couponCode: "ABC123", // This is just hardcoded in for now. This option would generally be fetched from the server
   couponInterval: 3 // This is just hardcoded in for now. This would generally be fetched from the server

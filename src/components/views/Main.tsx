@@ -1,6 +1,6 @@
 // Main view component
 // Core imports
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 // Contexts
 import { AppContext } from 'contexts/AppContext';
@@ -18,9 +18,12 @@ const Main = () => {
 
   // Display our products
   const renderProducts = () => {
-    return state.products.map(product => {
-      return <ProductListing key={product.id} product={product} />
-    });
+    if ( state.products.length > 0 ) {
+      return state.products.map(product => {
+        return <ProductListing key={product.id} product={product} />
+      });
+    }
+
   };
 
   return (

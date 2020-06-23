@@ -1,9 +1,11 @@
 import ApiService from './ApiService';
+import ProductsData from 'mock-data/products';
+import UsersData from 'mock-data/users';
 
 describe(`ApiService Tests`, () => {
-  it(`getProducts returns n products`, () => {
+  it(`getProducts returns all products`, () => {
     let n = 20;
-    let response = ApiService.getProducts(n);
+    const response = ProductsData.generateProducts(n);
     expect(response).toHaveLength(n);
     response.forEach(product => {
       expect(typeof product.name).toBe('string');
@@ -13,10 +15,9 @@ describe(`ApiService Tests`, () => {
     })
   });
   
-  it(`getUsers returns n users`, () => {
-    const n = 20;
-    const response = ApiService.getUsers(20);
-    expect(response).toHaveLength(20);
+  it(`getUsers returns all users`, () => {
+    let n = 20;
+    const response = UsersData.generateUsers(n);
     response.forEach(user => {
       expect(typeof user.name).toBe('string');
       expect(typeof user.id).toBe('string');

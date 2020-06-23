@@ -7,7 +7,7 @@ import { User } from 'types/types.d';
 const UsersData = {
 
   // Generates a set number of random products
-  generateUsers: (count: number): User[] => {
+  generateUsers: (count: number) => {
     const mockUsers = [];
     for ( let i=0; i<count; i++) {
       const mockUser: User = {

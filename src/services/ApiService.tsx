@@ -3,6 +3,7 @@ import ProductsData from 'mock-data/products';
 import UsersData from 'mock-data/users';
 import { Product, User, Purchase, Coupon } from 'types/types.d';
 import faker from 'faker';
+import config from '../config';
 
 /* Generally these would be calls to an endpoint defined in
 a config file. Because we do not need a persistent data
@@ -24,19 +25,21 @@ expected API responses instead */
 // }
 
 // Get a set amount of products
-export function getProducts(count: number): Product[] {
-  const products = ProductsData.generateProducts(count);
-  console.log(`GET /products`);
-  console.log(products);
-  return products;
+export async function getProducts() {
+  return fetch(`${config.API_ENDPOINT}/products`)
+  // const products = ProductsData.generateProducts(count);
+  // console.log(`GET /products`);
+  // console.log(products);
+  // return products;
 }
 
 // Get a set amount of users
-export function getUsers(count: number): User[] {
-  const users = UsersData.generateUsers(count);
-  console.log(`GET /users`);
-  console.log(users);
-  return users;
+export async function getUsers() {
+  return fetch(`${config.API_ENDPOINT}/users`)
+  // const users = UsersData.generateUsers(10);
+  // console.log(`GET /users`);
+  // console.log(users);
+  // return users;
 }
 
 // Make a purchase
