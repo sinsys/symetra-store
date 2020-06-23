@@ -1,28 +1,6 @@
-// This is a Service to mock intertactivity with a server
-import ProductsData from 'mock-data/products';
-import UsersData from 'mock-data/users';
-import { Product, User, Purchase, Coupon } from 'types/types.d';
-import faker from 'faker';
+// This is a Service to interact with a server
+import { Purchase, Coupon } from 'types/types.d';
 import config from '../config';
-
-/* Generally these would be calls to an endpoint defined in
-a config file. Because we do not need a persistent data
-layer, we are mocking API functionality by returning
-expected API responses instead */
-
-/* Example if server was available */
-// export function getProducts(count: number) {
-//   return (
-//     fetch(`${REACT_APP_API_ENDPOINT}/products`)
-//       .then(response => response.json())
-//       .then(products => {
-//         return products.json()
-//       })
-//       .catch(e => {
-//         console.log(e);
-//       })
-//   );
-// }
 
 // Get a set amount of products
 export async function getProducts() {
@@ -42,10 +20,21 @@ export async function getUsers() {
   // return users;
 }
 
-// Make a purchase
-export function makePurchase(productId: string, userId: string, coupon?: Coupon): Purchase {
-  let purchaseId = faker.random.uuid();
+// Return a random user to log in with
+export async function getCurrentUser() {
+  return fetch(`${config.API_ENDPOINT}/users/random`)
+  // const users = UsersData.generateUsers(10);
+  // console.log(`GET /users`);
+  // console.log(users);
+  // return users;
+}
 
+export async function getAdminDetails() {
+  return fetch(`${config.API_ENDPOINT}/admin`);
+}
+
+// Make a purchase
+export async function makePurchase(productId: string, userId: string, coupon?: Coupon) {
   // Validate if user applied coupon
   let couponApplied: boolean;
   let couponCode: string | null;
@@ -58,17 +47,19 @@ export function makePurchase(productId: string, userId: string, coupon?: Coupon)
   }
 
   const purchase: Purchase = {
-    id: purchaseId,
     productId: productId,
     userId: userId,
-    datePurchased: new Date(),
     couponApplied: couponApplied,
     couponCode: couponCode
   };
 
-  console.log(`POST /purchases`);
-  console.log(purchase);
-  return purchase;
+  return fetch(`${config.API_ENDPOINT}/purchases`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(purchase)
+  });
 }
 
 // Admin Reports
@@ -76,31 +67,32 @@ export function makePurchase(productId: string, userId: string, coupon?: Coupon)
 in as a prob as its already readily available in the component
 state. These would actually hit an endpoint in a real-world
 scenario */
-export function getAllPurchases(data: Purchase[]): Purchase[] {
-  console.log(`GET /purchases`);
-  console.log(data);
-  return data;
+export async function getAllPurchases() {
+  return fetch(`${config.API_ENDPOINT}/purchases`)
 }
 
-export function getCouponPurchases(data: Purchase[]): Purchase[] {
-  const couponPurchases = data.filter(purchase => purchase.couponApplied);
-  console.log(`GET /purchases?coupon=true`);
-  console.log(couponPurchases);
-  return couponPurchases;
+export async function getCouponPurchases() {
+  return fetch(`${config.API_ENDPOINT}/purchases/coupon`)
 }
 
-export function updateCouponInterval(data: number): { success: boolean, interval: number } {
-  const interval = { interval: data };
-  console.log(`PATCH /admin/coupon-interval`);
-  console.log(interval);
-  return { success: true, interval: data };
+export async function updateCouponInterval(couponInterval: number) {
+  return fetch(`${config.API_ENDPOINT}/admin/interval`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ couponInterval })
+  })
 };
 
-export function updateCouponCode(data: string): { success: boolean, code: string } {
-  const code = { code: data };
-  console.log(`PATCH /admin/coupon-code`);
-  console.log(code);
-  return { success: true, code: data };
+export async function updateCouponCode(couponCode: string) {
+  return fetch(`${config.API_ENDPOINT}/admin/coupon`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ couponCode })
+  })
 };
 
 /* This sort of functionality would exist on the server
@@ -123,8 +115,12 @@ export function validateCoupon(coupon: string | null, current: string): boolean 
 }
 
 export default {
+
+  getAdminDetails: getAdminDetails,
+
   getProducts: getProducts,
   getUsers: getUsers,
+  getCurrentUser: getCurrentUser,
 
   getAllPurchases: getAllPurchases,
   getCouponPurchases: getCouponPurchases,

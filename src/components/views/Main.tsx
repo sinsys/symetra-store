@@ -1,6 +1,6 @@
 // Main view component
 // Core imports
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 
 // Contexts
 import { AppContext } from 'contexts/AppContext';

@@ -28,10 +28,12 @@ const App = () => {
       // 10 seemed like a good sample size to initialize with for proof of concept
       Promise.all([
         ApiService.getProducts(),
-        ApiService.getUsers()
+        ApiService.getUsers(),
+        ApiService.getAllPurchases(),
+        ApiService.getAdminDetails()
       ])
       .then(responses => Promise.all(responses.map(res => res.json())))
-      .then(([products, users, couponDetails]) => {
+      .then(([products, users, purchases, admin]) => {
         // Set our data in context
         dispatch({
           type: 'set-products',
@@ -40,6 +42,18 @@ const App = () => {
         dispatch({
           type: 'set-users',
           payload: users
+        });
+        dispatch({
+          type: 'set-coupon-interval',
+          payload: admin.couponInterval
+        });
+        dispatch({
+          type: 'set-coupon-code',
+          payload: admin.couponCode
+        })
+        dispatch({
+          type: 'set-purchases',
+          payload: purchases
         });
         dispatch({
           type: 'set-current-user',

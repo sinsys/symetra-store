@@ -14,10 +14,10 @@ export type Product = {
 }
 
 export type Purchase = {
-  id: string;
+  id?: string;
   productId: string;
   userId: string;
-  datePurchased: Date;
+  datePurchased?: Date;
   couponApplied: boolean;
   couponCode: string | null;
 }
@@ -25,3 +25,4 @@ export type Purchase = {
 export type Coupon = {
   code: string | null;
 }
+

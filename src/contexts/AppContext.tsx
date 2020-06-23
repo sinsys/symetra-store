@@ -7,9 +7,6 @@ import React, {
 // Types
 import { Product, User, Purchase } from 'types/types.d';
 
-// Services
-import ApiService from 'services/ApiService';
-
 // Setup explicit interfaces for our Context
 interface AppContextProps {
   state: AppContextState;
@@ -40,8 +37,8 @@ const initialState: AppContextState = {
   products: [] as Product[],
   users: [initialUser],
   purchases: [] as Purchase[],
-  couponCode: "ABC123", // This is just hardcoded in for now. This option would generally be fetched from the server
-  couponInterval: 3 // This is just hardcoded in for now. This would generally be fetched from the server
+  couponCode: "", // This is just hardcoded in for now. This option would generally be fetched from the server
+  couponInterval: 0 // This is just hardcoded in for now. This would generally be fetched from the server
 };
 
 // Initialize Context
@@ -62,18 +59,16 @@ const reducer = (state: AppContextState, action: any) => {
         ...state,
         users: payload as User[]
       };
+    case 'set-purchases':
+      return {
+        ...state,
+        purchases: payload as Purchase[]
+      }
     case 'set-current-user':
       return {
         ...state,
         currentUser: payload as User
       };
-
-    // Change to a random user
-    case 'set-random-user':
-      return {
-        ...state,
-        currentUser: state.users[Math.floor(Math.random() * state.users.length)]
-      }
 
     // Purchases related
     case 'make-purchase':
@@ -93,8 +88,8 @@ const reducer = (state: AppContextState, action: any) => {
       }
     
     case 'set-coupon':
-      const userIndex = state.users.findIndex(user => user.id === payload.id);
-      if (ApiService.checkGrantCoupon(state.purchases.length, state.couponInterval) ) {
+      const userIndex = state.users.findIndex(user => user.id === payload.userId);
+      if (payload.coupon) {
         state.users[userIndex].hasCoupon = true;
         state.users[userIndex].couponCode = state.couponCode;
       }

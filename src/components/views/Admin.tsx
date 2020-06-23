@@ -1,9 +1,6 @@
 // Admin view component
 // Core imports
-import React, { useContext, useState } from 'react';
-
-// Types
-import { Purchase } from 'types/types.d';
+import React, { useContext, useState, useEffect } from 'react';
 
 // Contexts
 import { AppContext } from 'contexts/AppContext';
@@ -19,7 +16,18 @@ const Admin = () => {
   const { state, dispatch } = useContext(AppContext);
 
   // Mimicking how the data could be acquired
-  const purchases: Purchase[] = ApiService.getAllPurchases(state.purchases);
+  useEffect(() => {
+    ApiService.getAllPurchases()
+      .then(response => response.json())
+      .then(purchases => {
+        dispatch({
+          type: 'set-purchases',
+          payload: purchases
+        })
+      });
+    // eslint-disable-next-line
+  },[]);
+
 
   const [couponInterval, setCouponInterval] = useState(state.couponInterval);
   const [couponCode, setCouponCode] = useState(state.couponCode);
@@ -36,28 +44,38 @@ const Admin = () => {
   // Updating the coupon interval
   const submitCouponInterval = (e: any) => {
     e.preventDefault();
-    dispatch({
-      type: 'set-coupon-interval',
-      payload: couponInterval
-    })
+    ApiService.updateCouponInterval(couponInterval)
+      .then(response => response.json())
+      .then(status => {
+        dispatch({
+          type: 'set-coupon-interval',
+          payload: status.value
+        });
+      })
+
   }
 
-  // Updating the coupon code
+  // Updating the coupon interval
   const submitCouponCode = (e: any) => {
     e.preventDefault();
-    dispatch({
-      type: 'set-coupon-code',
-      payload: couponCode
-    })
+    ApiService.updateCouponCode(couponCode)
+      .then(response => response.json())
+      .then(status => {
+        dispatch({
+          type: 'set-coupon-code',
+          payload: status.value
+        });
+      })
+
   }
 
   // Generates one of two reports that download to the client in json format.
   const generateReport = (type: string) => {
     switch(type) {
       case 'all':
-        return "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(purchases));
+        return "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state.purchases));
       case 'coupon':
-        return "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(ApiService.getCouponPurchases(state.purchases)));
+        return "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state.purchases.filter(purchase => purchase.couponApplied)));
       default:
         return "/admin";
     }
@@ -107,7 +125,7 @@ const Admin = () => {
               </tr>
             </thead>
             <tbody>
-              {purchases.map(purchase => {
+              {state.purchases.map(purchase => {
                 return (
                   <tr className="Purchase" key={purchase.id}>
                     <td>{purchase.id}</td>
@@ -115,7 +133,7 @@ const Admin = () => {
                     <td>{purchase.couponCode}</td>
                     <td>{purchase.productId}</td>
                     <td>{purchase.userId}</td>
-                    <td>{purchase.datePurchased.toLocaleString()}</td>
+                    <td>{purchase.datePurchased || ""}</td>
                   </tr>
                 )
               })}

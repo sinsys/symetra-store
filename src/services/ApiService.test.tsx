@@ -3,6 +3,7 @@ import ProductsData from 'mock-data/products';
 import UsersData from 'mock-data/users';
 
 describe(`ApiService Tests`, () => {
+  
   it(`getProducts returns all products`, () => {
     let n = 20;
     const response = ProductsData.generateProducts(n);
@@ -15,9 +16,18 @@ describe(`ApiService Tests`, () => {
     })
   });
   
+  it(`getCurrentUser returns a correct user`, () => {
+    const user = UsersData.generateUsers(1)[0];
+    expect(typeof user.name).toBe('string');
+    expect(typeof user.id).toBe('string');
+    expect(typeof user.purchases).toBe('object');
+    expect(user.hasCoupon).toBeFalsy();
+  });
+
   it(`getUsers returns all users`, () => {
     let n = 20;
     const response = UsersData.generateUsers(n);
+    expect(response).toHaveLength(n);
     response.forEach(user => {
       expect(typeof user.name).toBe('string');
       expect(typeof user.id).toBe('string');
@@ -32,49 +42,8 @@ describe(`ApiService Tests`, () => {
   ];
 
   it(`getAllPurchases returns 2 purchases`, () => {
-    let allPurchases = ApiService.getAllPurchases(purchaseFixtures);
+    let allPurchases = purchaseFixtures;
     expect(allPurchases).toHaveLength(2);
-  });
-
-  it(`getCouponPurchases returns 1 purchase`, () => {
-    let couponPurchases = ApiService.getCouponPurchases(purchaseFixtures);
-    expect(couponPurchases).toHaveLength(1);
-  });
-
-  it(`updateCouponInterval updates the interval for granting coupons`, () => {
-    let response = ApiService.updateCouponInterval(5);
-    expect(response.interval).toBe(5);
-    expect(response.success).toEqual(true);
-  });
-  
-  it(`updateCouponCode updates the valid coupon code`, () => {
-    let response = ApiService.updateCouponCode("foo");
-    expect(response.code).toBe("foo");
-    expect(response.success).toEqual(true);
-  });
-  
-  it(`makePurchase returns a valid Purchase`, () => {
-    let newPurchase = {
-      productId: "123",
-      userId: "456",
-      coupon: {
-        code: "ABC"
-      },
-      datePurchased: new Date()
-    };
-    let expectedResponse = {
-      couponApplied: true,
-      couponCode: "ABC",
-      datePurchased: newPurchase.datePurchased,
-      productId: "123",
-      userId: "456"
-    };
-    let response = ApiService.makePurchase(newPurchase.productId, newPurchase.userId, newPurchase.coupon);
-    expect(response.productId).toEqual(expectedResponse.productId);
-    expect(response.userId).toEqual(expectedResponse.userId);
-    expect(response.couponCode).toEqual(expectedResponse.couponCode);
-    expect(response.datePurchased.toTimeString()).toEqual(expectedResponse.datePurchased.toTimeString());
-    expect(response.couponApplied).toEqual(expectedResponse.couponApplied);
   });
 
   it(`checkGrantCoupon returns false when not an nth transaction`, () => {
@@ -104,4 +73,5 @@ describe(`ApiService Tests`, () => {
     let result = ApiService.validateCoupon(code, validCode);
     expect(result).toEqual(true);
   });
-})
+
+});

@@ -18,9 +18,15 @@ const CurrentUserDisplay = () => {
   const user: User = state.currentUser;
 
   const handleChangeUser = () => {
-    dispatch({
-      type: 'set-random-user'
-    })
+    ApiService.getCurrentUser()
+      .then(response => response.json())
+      .then(user => {
+        dispatch({
+          type: 'set-current-user',
+          payload: user
+        })
+      })
+
   };
 
   return (

@@ -26,39 +26,64 @@ const ProductListing = (props: ProductListingProps) => {
   const product: Product = props.product;
 
   const handleBuyProduct = (useCoupon?: boolean) => {
-    const makePurchase = new Promise((res, rej) => {
-      if (Object.keys(state.currentUser).length === 0) {
-        rej(false);
-      }
-      if (useCoupon) {
-        const ourCoupon: Coupon = {code: state.currentUser.couponCode}
-        const purchase = ApiService.makePurchase(product.id, state.currentUser.id, ourCoupon);
-        setUseCoupon(false);
-        dispatch({
-          type: 'consume-coupon',
-          payload: state.currentUser
-        })
-        res(purchase);
-      } else {
-        const purchase = ApiService.makePurchase(product.id, state.currentUser.id);
-        res(purchase);
-      }
-    });
+    if ( useCoupon ) {
+      const ourCoupon: Coupon = {code: state.currentUser.couponCode};
+      ApiService.makePurchase(product.id, state.currentUser.id, ourCoupon)
+        .then(response => response.json())
+        .then(responseJSON => {
 
-    makePurchase
-      .then(response => {
-        dispatch({
-          type: 'make-purchase',
-          payload: response as Purchase
+          dispatch({
+            type: 'make-purchase',
+            payload: responseJSON.value.purchase as Purchase
+          })
+
+          if ( responseJSON.value.purchase.couponApplied === true ) {
+            dispatch({
+              type: 'consume-coupon',
+              payload: state.currentUser
+            });
+            setUseCoupon(false);
+          }
+
+          if ( responseJSON.value.coupon === true ) {
+            dispatch({
+              type: 'set-coupon',
+              payload: {
+                userId: responseJSON.value.purchase.userId,
+                coupon: true
+              }
+            })
+          }
         })
-        dispatch({
-          type: 'set-coupon',
-          payload: state.currentUser
+        .catch(e => {
+          console.log(e);
         })
-      })
-      .catch(e => {
-        console.log(e);
-      })
+    } else {
+      ApiService.makePurchase(product.id, state.currentUser.id)
+        .then(response => response.json())
+        .then(responseJSON => {
+
+          dispatch({
+            type: 'make-purchase',
+            payload: responseJSON.value.purchase as Purchase
+          })
+
+          if ( responseJSON.value.coupon === true ) {
+            dispatch({
+              type: 'set-coupon',
+              payload: {
+                userId: responseJSON.value.purchase.userId,
+                coupon: true
+              }
+            })
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        })
+    }
+    
+
   }
 
   const handleApplyCoupon = () => {
